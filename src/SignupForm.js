@@ -20,8 +20,8 @@ let renderSignupFirstPart = function(){
         <React.Fragment>
             {renderSignupTitleContainer()}
             <div className="signupFormContentBox">
-                <LabelInput labelText="Nombre Completo" validationMessage="Debe ingresar un nombre seguido de al menos un apellido" pattern="^\s*\w+(\s+\w+){1,}\s*$" handler={partial(this.setStateKeyToEventValue, partial.placeholder, 'name')} placeholder="Ej.: Juan Carlos (sin espacios innecesarios)"/>
-                <LabelInput labelText="Nº de CUIL" validationMessage="El cuit debe ingresarse en este formato 12-12345678-1" maxLength="13" pattern="^\d{2}-\d{8}-\d{1}$" handler={partial(this.setStateKeyToEventValue, partial.placeholder, 'cuil')} placeholder="23-45678901-2"/>
+                <LabelInput value={this.state.name} labelText="Nombre Completo" validationMessage="Debe ingresar un nombre seguido de al menos un apellido" pattern="^\s*\w+(\s+\w+){1,}\s*$" handler={partial(this.setStateKeyToEventValue, partial.placeholder, 'name')} placeholder="Ej.: Juan Carlos"/>
+                <LabelInput value={this.state.cuil} labelText="Nº de CUIL" validationMessage="El CUIL debe ingresarse en este formato 12-12345678-1" maxLength="13" pattern="^\d{2}-\d{8}-\d{1}$" handler={partial(this.setStateKeyToEventValue, partial.placeholder, 'cuil')} placeholder="23-45678901-2"/>
             </div>
         </React.Fragment>
     );
@@ -32,10 +32,10 @@ let renderSignupSecondPart = function(){
         <React.Fragment>
             {renderSignupTitleContainer()}
             <div className="signupFormContentBox">
-                <LabelInput id="signupFormStreet" labelText="Calle" handler={partial(this.setStateKeyToEventValue, partial.placeholder, 'street')} placeholder="Ej.: Av. de Mayo"/>
-                <LabelInput id="signupFormNumber" type="number" min="1" max="99999" labelText="N&uacute;mero" handler={partial(this.setStateKeyToEventValue, partial.placeholder, 'number')} placeholder="Ej.: 3651"/>    
-                <LabelSelect labelText="Provincia" handler={partial(this.setProvinceAndGetCities, partial.placeholder, 'province')} selectOptions={this.state.provinces} selectedOption={this.state.province}/>
-                <LabelSelect labelText="Localidad" handler={partial(this.setStateKeyToEventValue, partial.placeholder, 'city')} selectOptions={this.state.cities} selectedOption={this.state.city}/>
+                <LabelInput id="signupFormStreet" value={this.state.street} labelText="Calle" handler={partial(this.setStateKeyToEventValue, partial.placeholder, 'street')} placeholder="Ej.: Av. de Mayo"/>
+                <LabelInput id="signupFormNumber" value={this.state.number} type="number" min="1" max="99999" labelText="N&uacute;mero" handler={partial(this.setStateKeyToEventValue, partial.placeholder, 'number')} placeholder="Ej.: 3651"/>    
+                <LabelSelect labelText="Provincia" value={this.state.province} handler={partial(this.setProvinceAndGetCities, partial.placeholder, 'province')} selectOptions={this.state.provinces} selectedOption={this.state.province}/>
+                <LabelSelect labelText="Localidad" value={this.state.city} handler={partial(this.setStateKeyToEventValue, partial.placeholder, 'city')} selectOptions={this.state.cities} selectedOption={this.state.city}/>
             </div>
         </React.Fragment>
     );
@@ -46,8 +46,9 @@ let renderSignupThirdPart = function(){
         <React.Fragment>
             {renderSignupTitleContainer()}
             <div className="signupFormContentBox">
-                <LabelInput type="email" labelText="E-mail" handler={partial(this.setStateKeyToEventValue, partial.placeholder, 'email')} placeholder="Ingres&aacute; tu direcci&oacute;n de correo electronico"/>
-                <LabelInput type="password" labelText="Contrase&ntilde;a" handler={partial(this.setStateKeyToEventValue, partial.placeholder, 'password')} placeholder="Debe ser alfanum&eacute;rica de al menos 8 caracteres"/>
+                <LabelInput value={this.state.email} type="email" labelText="E-mail" validationMessage="No es un mail valido" handler={partial(this.setStateKeyToEventValue, partial.placeholder, 'email')} placeholder="Ingres&aacute; tu direcci&oacute;n de correo electronico"/>
+                <LabelInput value={this.state.password} pattern="^(?=.{8,}$)[a-zA-Z]*\d+" validation="Debe contener al menos 8 caracteres, estos pueden ser del alfabeto estadounidense y debe contener al menos un numero" type={this.state.showPassword?"text":"password"} maxLenght="8" labelText="Contrase&ntilde;a" handler={partial(this.setStateKeyToEventValue, partial.placeholder, 'password')} placeholder="Debe ser alfanum&eacute;rica de al menos 8 caracteres"/>
+                <label><input type="checkbox" value={this.state.showPasword} onChange={partial(this.setStateKeyToEventValue, partial.placeholder, 'showPassword', true)}/>Mostrar contrase&ntilde;a</label>
             </div>
         </React.Fragment>
     );
@@ -61,6 +62,15 @@ let renderSignupFourthPart = function(){
             </div>
     );
 };
+
+let renderSignupButtons = function(){
+    return(
+        <div className="signupFormBottomFlexbox">
+            <input className={this.state.currentPart === 1 || this.state.currentPart === 4? "hidden" : "btn btn-white"} type="reset" value="Atr&aacute;s"/>
+            <input type="submit" value="Siguiente" className="btn btn-blue"/>
+        </div>
+    )
+}
 
 let renderCurrentPart = function(){
     switch(this.state.currentPart){
@@ -81,13 +91,12 @@ const currentPartNumberToImagePath = {
     3: './assets/step3.png'
 }
 
-
-
 class SignupForm extends Component {
 
     constructor(props){
         super(props);
         this.state = {
+            showPassword: false,
             currentPart: 1,
             provinces: [],
             cities: [],
@@ -101,21 +110,6 @@ class SignupForm extends Component {
             password: ''
         }
 
-        this.nameRef = React.createRef();
-        this.cuilRef = React.createRef();
-        this.streetRef = React.createRef();
-        this.numberRef = React.createRef();
-        this.provinceRef = React.createRef();
-        this.cityRef = React.createRef();
-        this.emailRef = React.createRef();
-        this.passwordRef = React.createRef();
-
-        this.setStateKeyToEventValue = this.setStateKeyToEventValue.bind(this);
-        this.setProvinceAndGetCities = this.setProvinceAndGetCities.bind(this);
-
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handlePrev = this.handlePrev.bind(this);
-        this.handleNext = this.handleNext.bind(this);
 
         renderSignupFirstPart = renderSignupFirstPart.bind(this);
         renderSignupSecondPart = renderSignupSecondPart.bind(this);
@@ -123,71 +117,80 @@ class SignupForm extends Component {
         renderSignupFourthPart = renderSignupFourthPart.bind(this);
         renderCurrentPart = renderCurrentPart.bind(this);
         renderSignupTitleContainer = renderSignupTitleContainer.bind(this);
-
-        this.getProvinces = this.getProvinces.bind(this);
-        this.getCities = this.getCities.bind(this);
+        renderSignupButtons = renderSignupButtons.bind(this);
     }
 
     componentDidMount(){
         this.getProvinces();
     }
 
-    getProvinces(){
+    getProvinces = () => {
         fetch('https://geopagos-challenge.s3.amazonaws.com/provinces.json')
         .then(response => response.json())
         .then(provinces => this.setState({provinces}));
     };
 
-    getCities(cityId){
+    getCities = (cityId) => {
 
         fetch(`https://geopagos-challenge.s3.amazonaws.com/provinces/${cityId}.json`)
         .then(response => response.json())
         .then(response => this.setState({ cities: response.cities }));
     }
 
-    setProvinceAndGetCities(event){
+    setProvinceAndGetCities = (event) => {
         this.setStateKeyToEventValue(event, 'province');
         this.getCities(event.target.value);
     }
 
-    setStateKeyToEventValue(event, formDataKey){
+    setStateKeyToEventValue = (event, formDataKey, checkbox=false) => {
+
         this.setState(
             {
-                [formDataKey]: event.target.value
+                [formDataKey]: checkbox? event.target.checked: event.target.value
             }
         );
     }
 
-    handlePrev(){
-        if(this.state.currentPart > 1){
-            this.setState({
-                currentPart: this.state.currentPart - 1
-            });
-        }
-    }
-
-    handleNext(){
-        if(this.state.currentPart < 4){
+    handleSubmit = (event) => {
+        
+        event.preventDefault();
+        
+        if(event.target.checkValidity() && this.state.currentPart < 4){
             this.setState({
                 currentPart: this.state.currentPart + 1
+            }, () => {
+                if(this.state.currentPart === 4){
+
+                    const{ showPassword, currentPart, provinces, cities, dataObj} = this.state;
+                    
+                    dataObj.cuil = dataObj.cuil.split('-').join('')
+
+                    for(const prop in dataObj){
+                        dataObj[prop].trim()
+                    }
+
+                    fetch('https://www.mocky.io/v2/5185415ba171ea3a00704eed', {
+                            method: 'POST',
+                            headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(dataObj)
+                        },
+                    )
+                    .then(response => response.json())
+                    .then(response => console.log(response));
+                }
             });
         }
-    }
-
-    handleSubmit(event){
-        event.preventDefault();
-        console.log(event.nativeEvent);
     }
 
     render(){
     
         return (
-            <form className="signupForm" onSubmit={this.handleSubmit}>
+            <form className="signupForm" onSubmit={this.handleSubmit} onReset={this.handlePrev}>
                 {renderCurrentPart()}
-                <div className="signupFormBottomFlexbox">
-                    <input type="button" value="Atr&aacute;s" className="btn btn-white" onClick={this.handlePrev}/>
-                    <input type="submit" value="Siguiente" className="btn btn-blue"/>
-                </div>
+                {this.state.currentPart !== 4? renderSignupButtons() : null}
             </form>
         );
     }

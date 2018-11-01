@@ -5,21 +5,29 @@ import './LabelInput.scss';
 class LabelInput extends Component{
     constructor(props){
         super(props)
-
         this.inputRef = React.createRef();
     }
 
     componentDidMount(){
 
-        console.log(this.inputRef.current);
+        this.inputRef.current.oninvalid = (e) => {
+            if (!e.target.validity.valid) {
+                e.target.setCustomValidity(this.props.validationMessage);
+            }
+        };
 
-        this.inputRef.current.setCustomValidity(this.props.validationMessage);
+        this.inputRef.current.oninput = (e) => {
+            e.target.setCustomValidity("");
+            if (!e.target.validity.valid) {
+                e.target.setCustomValidity(this.props.validationMessage);
+            }
+        };
     }
-
+    
     render(){
         return (
             <div className="labelInput" id={this.props.id}>
-                <label><p>{this.props.labelText}</p><input ref={this.inputRef} type={this.props.type} onChange={this.props.handler} required={this.props.required} placeholder={this.props.placeholder} minLength={this.props.minLength} maxLength={this.props.maxLength} pattern={this.props.pattern}/></label>
+                <label><p>{this.props.labelText}</p><input ref={this.inputRef} value={this.props.value} type={this.props.type} onChange={this.props.handler} required={this.props.required} placeholder={this.props.placeholder} minLength={this.props.minLength} maxLength={this.props.maxLength} pattern={this.props.pattern}/></label>
             </div>
         );
     }
