@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css?family=Ubuntu');
+
+$smokewhite: #fafafa;
+
+body {
+  margin: 0;
+  background-color: $smokewhite;
+  font-family: Ubuntu;
+}
+
+p, h2 {
+  margin: 0;
+}
+
+@media
+(min-device-width: 800px)
+and (max-device-width: 1049px){
+    html{
+      font-size: 18px;
+    }
+}
+
+@media
+(min-device-width: 1050px)
+and (max-device-width: 1439px){
+    html{
+      font-size: 22px;
+    }
+}
+@media
+(min-device-width: 1440px)
+and (max-device-width: 1599px){
+    html{
+      font-size: 26px;
+    }
+}
+
+@media
+(min-device-width: 1600px)
+and (max-device-width: 1759px){
+    html{
+      font-size: 30px;
+    }
+}
+
+@media
+(min-device-width: 1920px)
+and (max-device-width: 2559px){
+    html{
+      font-size: 34px;
+    }
+}
+
+@media
+(min-device-width: 2560px)
+and (max-device-width: 3071px){
+    html{
+      font-size: 40px;
+    }
+}
+
+
+@media
+(min-device-width: 3072px)
+and (max-device-width: 3840px){
+    html{
+      font-size: 44px;
+    }
+}
+
+

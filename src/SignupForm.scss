@@ -1,0 +1,136 @@
+$blue: #0058CC;
+$lightblue: #41C2FF;
+$lightblueshadow: #CBEFFF;
+
+
+.signupForm{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    box-sizing: border-box;
+
+    background-color: white;
+    color: $blue;
+
+    .labelInput{
+
+        width: 100%;
+
+        input{
+            height: 1rem;
+            line-height: 1rem;
+            font-size: 0.8rem;    
+        }
+    }
+
+    .labelSelect{
+        min-width: 40%;
+        max-width: 45%;
+    }
+
+    select, input::placeholder{
+        font-size: 0.8rem;
+        
+    }
+
+    p, .btn{
+        font-size: 1rem;
+    }
+
+
+    h2{
+        font-size: 1.6rem;
+    }
+}
+
+.signupFormTopFlexbox, .signupFormContentBox, .signupFormBottomFlexbox {
+    display: flex;
+    width: 80%;
+}
+
+.signupFormTopFlexbox, .signupFormBottomFlexbox{
+    height: 15%;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.signupFormTopFlexbox{
+    align-items: flex-end;
+}
+
+.signupFormContentBox{
+
+    height: 70%;
+
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-content: flex-start;
+
+    box-sizing: border-box;
+    padding-top: 10%;
+
+    .labelInput, .labelSelect{
+        margin-top: 20px;
+    }
+}
+
+#signupFormStreet{
+        min-width: 50%;
+        max-width: 60%;
+}
+
+#signupFormNumber{
+    width: 30%;
+}
+
+.stepLogo{
+    height: 1.6rem;
+    align-self: flex-end;
+}
+
+.btn {
+    box-shadow: none;
+    border-radius: 3px;
+
+    width: 40%;
+    height: 60%;
+
+    border-width: 1px;
+    border-style: solid;
+
+
+    
+    &:focus{
+        outline: none;
+        border:1px solid $lightblue;
+        box-shadow: 0 0 1px $lightblueshadow;
+    }
+}
+
+.btn-blue{
+    background-color: $blue;
+    color: white;
+    border-color: white;
+}
+
+.btn-white{
+    background-color: white;
+    color: $blue;
+    border-color: $blue;
+}
+
+.outroText{
+    text-align: center;
+}
+
+.signupTickLogoBox{
+    justify-content: center;
+    align-content: space-around;
+
+    .tickLogo{
+        max-width: 50%;
+        align-self: center;
+    }
+}

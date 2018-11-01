@@ -1,0 +1,23 @@
+$gray: #AFB5C0;
+$lightblue: #41C2FF;
+$lightblueshadow: #CBEFFF;
+
+.labelInput{    
+    input {
+        width: 100%;
+
+        font-family: Ubuntu;
+        
+        border: 1px solid $gray;
+        
+        &::placeholder {
+            color: $gray;
+        }
+        
+        &:focus{
+            outline: none;
+            border:1px solid $lightblue;
+            box-shadow: 0 0 1px $lightblueshadow;
+        }
+    }
+}
