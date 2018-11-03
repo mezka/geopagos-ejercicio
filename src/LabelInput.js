@@ -27,7 +27,7 @@ class LabelInput extends Component{
     render(){
         return (
             <div className="labelInput" id={this.props.id}>
-                <label><p>{this.props.labelText}</p><input ref={this.inputRef} value={this.props.value} type={this.props.type} onChange={this.props.handler} required={this.props.required} placeholder={this.props.placeholder} minLength={this.props.minLength} maxLength={this.props.maxLength} pattern={this.props.pattern}/></label>
+                <label><p>{this.props.labelText}</p><input ref={this.inputRef} value={this.props.value} type={this.props.type} onChange={this.props.handler} required={this.props.required} placeholder={this.props.placeholder} minLength={this.props.minLength} maxLength={this.props.maxLength} pattern={this.props.pattern} step="1"/></label>
             </div>
         );
     }

@@ -47,7 +47,7 @@ let renderSignupThirdPart = function(){
             {renderSignupTitleContainer()}
             <div className="signupFormContentBox">
                 <LabelInput value={this.state.email} type="email" labelText="E-mail" validationMessage="No es un mail valido" handler={partial(this.setStateKeyToEventValue, partial.placeholder, 'email')} placeholder="Ingres&aacute; tu direcci&oacute;n de correo electronico"/>
-                <LabelInput value={this.state.password} pattern="^(?=.{8,}$)[a-zA-Z]*\d+" validation="Debe contener al menos 8 caracteres, estos pueden ser del alfabeto estadounidense y debe contener al menos un numero" type={this.state.showPassword?"text":"password"} maxLenght="8" labelText="Contrase&ntilde;a" handler={partial(this.setStateKeyToEventValue, partial.placeholder, 'password')} placeholder="Debe ser alfanum&eacute;rica de al menos 8 caracteres"/>
+                <LabelInput value={this.state.password} pattern="^((?=.*[a-zA-z])(?=.*\d+)).{8,}$" validation="Debe contener al menos 8 caracteres, estos pueden ser del alfabeto estadounidense y debe contener al menos un numero" type={this.state.showPassword?"text":"password"} maxLenght="8" labelText="Contrase&ntilde;a" handler={partial(this.setStateKeyToEventValue, partial.placeholder, 'password')} placeholder="Debe ser alfanum&eacute;rica de al menos 8 caracteres"/>
                 <label><input type="checkbox" value={this.state.showPasword} onChange={partial(this.setStateKeyToEventValue, partial.placeholder, 'showPassword', true)}/>Mostrar contrase&ntilde;a</label>
             </div>
         </React.Fragment>
@@ -151,6 +151,16 @@ class SignupForm extends Component {
         );
     }
 
+    handlePrev = (event) => {
+        event.preventDefault();
+
+        if(this.state.currentPart > 1){
+            this.setState({
+                currentPart: this.state.currentPart - 1
+            });
+        }
+    }
+
     handleSubmit = (event) => {
         
         event.preventDefault();
@@ -161,14 +171,17 @@ class SignupForm extends Component {
             }, () => {
                 if(this.state.currentPart === 4){
 
-                    const{ showPassword, currentPart, provinces, cities, dataObj} = this.state;
-                    
-                    dataObj.cuil = dataObj.cuil.split('-').join('')
-
-                    for(const prop in dataObj){
-                        dataObj[prop].trim()
+                    const dataObj = {
+                        name: this.state.name.trim(),
+                        cuil: this.state.cuil.split('-').join(''),
+                        street: this.state.street.trim(),
+                        number: this.state.number,
+                        province: this.state.province.trim(),
+                        city: this.state.city.trim(),
+                        email: this.state.email.trim(),
+                        password: this.state.password
                     }
-
+                    
                     fetch('https://www.mocky.io/v2/5185415ba171ea3a00704eed', {
                             method: 'POST',
                             headers: {
